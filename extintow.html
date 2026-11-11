@@ -1,1 +1,871 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Recarga de Extintores | Mantenimiento Certificado</title>
+  <meta name="description" content="Servicio profesional de recarga y mantenimiento de extintores. Cumplimos normativas vigentes. Atención rápida y certificada. Solicita tu servicio hoy.">
+  <meta name="theme-color" content="#c1121f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="robots" content="index, follow">
 
+  <style>
+    :root {
+      --primary: #c1121f;
+      --primary-dark: #9b0e18;
+      --secondary: #1a1a2e;
+      --accent: #f4a261;
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --text: #1a1a1a;
+      --text-muted: #6b6b6b;
+      --border: #e8e8ed;
+      --shadow: 0 4px 16px rgba(0,0,0,0.06);
+      --radius: 16px;
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --success: #2a9d8f;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+      overscroll-behavior: none;
+    }
+
+    .app {
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: var(--bg);
+      position: relative;
+      box-shadow: 0 0 40px rgba(0,0,0,0.08);
+    }
+
+    /* Status bar */
+    .status-bar {
+      height: 28px;
+      background: var(--secondary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      font-size: 12px;
+      font-weight: 600;
+      color: white;
+    }
+    .status-bar .icons { display: flex; gap: 6px; font-size: 11px; }
+
+    /* Header */
+    .app-header {
+      background: var(--card);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .logo {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+    .logo span { color: var(--secondary); }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      cursor: pointer;
+    }
+    .icon-btn:active { background: #e0e0e5; }
+
+    /* Pages */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* Search */
+    .search-wrap { padding: 12px 16px 4px; }
+    .search-bar {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+    .search-bar input {
+      border: none;
+      outline: none;
+      background: transparent;
+      flex: 1;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+    .search-bar input::placeholder { color: #aaa; }
+
+    /* Promo / Hero */
+    .promo {
+      margin: 14px 16px;
+      background: linear-gradient(135deg, #c1121f, #780000);
+      border-radius: var(--radius);
+      padding: 20px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .promo::after {
+      content: '🧯';
+      position: absolute;
+      right: -8px;
+      bottom: -18px;
+      font-size: 5.5rem;
+      opacity: 0.18;
+    }
+    .promo .tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      background: rgba(255,255,255,0.22);
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+    .promo h2 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      line-height: 1.25;
+    }
+    .promo p {
+      font-size: 0.88rem;
+      opacity: 0.92;
+      margin-bottom: 16px;
+      max-width: 85%;
+    }
+    .promo-btns {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .promo-btn {
+      background: white;
+      color: var(--primary);
+      border: none;
+      padding: 10px 18px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .promo-btn.outline {
+      background: transparent;
+      color: white;
+      border: 2px solid rgba(255,255,255,0.6);
+    }
+
+    /* Section labels */
+    .section-label {
+      padding: 18px 16px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .section-label h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--secondary);
+    }
+    .section-label a {
+      font-size: 0.8rem;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* Service chips */
+    .cats-scroll {
+      display: flex;
+      gap: 12px;
+      padding: 0 16px 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .cats-scroll::-webkit-scrollbar { display: none; }
+
+    .cat-chip {
+      flex-shrink: 0;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 16px;
+      text-align: center;
+      min-width: 96px;
+      text-decoration: none;
+      color: var(--text);
+      box-shadow: var(--shadow);
+    }
+    .cat-chip:active { transform: scale(0.96); }
+    .cat-chip .emoji {
+      font-size: 1.6rem;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .cat-chip span {
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* Service cards */
+    .services {
+      padding: 8px 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .service-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .service-card .icon-box {
+      width: 52px;
+      height: 52px;
+      background: #fde8ea;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      flex-shrink: 0;
+    }
+    .service-card h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--secondary);
+      margin-bottom: 3px;
+    }
+    .service-card p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .service-card .meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .service-card .meta span {
+      font-size: 0.72rem;
+      background: var(--bg);
+      padding: 3px 8px;
+      border-radius: 20px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* Benefits */
+    .benefits {
+      padding: 8px 16px 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .benefit-card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 16px 12px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+    .benefit-card .emoji {
+      font-size: 1.5rem;
+      margin-bottom: 6px;
+    }
+    .benefit-card h4 {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--secondary);
+      margin-bottom: 2px;
+    }
+    .benefit-card p {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    /* Trust / Compliance */
+    .trust-box {
+      margin: 8px 16px 20px;
+      background: #f0f9f6;
+      border: 1px solid #c8e6d8;
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .trust-box h4 {
+      font-size: 0.9rem;
+      color: var(--success);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .trust-box ul {
+      list-style: none;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .trust-box li {
+      padding: 4px 0;
+      padding-left: 18px;
+      position: relative;
+    }
+    .trust-box li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--success);
+      font-weight: 700;
+    }
+
+    /* CTA block */
+    .cta-block {
+      margin: 10px 16px 100px;
+      background: var(--secondary);
+      border-radius: var(--radius);
+      padding: 22px 18px;
+      text-align: center;
+      color: white;
+    }
+    .cta-block h3 {
+      font-size: 1.15rem;
+      margin-bottom: 6px;
+    }
+    .cta-block p {
+      font-size: 0.85rem;
+      opacity: 0.85;
+      margin-bottom: 16px;
+    }
+    .cta-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .btn-main {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      display: block;
+      text-align: center;
+    }
+    .btn-main:active { background: var(--primary-dark); }
+    .btn-secondary {
+      background: transparent;
+      color: white;
+      border: 2px solid rgba(255,255,255,0.4);
+      padding: 12px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      display: block;
+      text-align: center;
+    }
+
+    /* Bottom nav */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0 calc(8px + var(--safe-bottom));
+      z-index: 100;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 12px;
+    }
+    .nav-item .nav-icon { font-size: 1.3rem; }
+    .nav-item.active { color: var(--primary); }
+
+    /* FAB WhatsApp */
+    .fab-whatsapp {
+      position: fixed;
+      bottom: calc(75px + var(--safe-bottom));
+      right: max(16px, calc(50% - 224px));
+      width: 54px;
+      height: 54px;
+      background: #25d366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.7rem;
+      color: white;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(37, 211, 102, 0.45);
+      z-index: 90;
+    }
+    .fab-whatsapp:active { transform: scale(0.92); }
+
+    /* Inner pages */
+    .page-content { padding: 20px 16px 100px; }
+
+    .info-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+    .info-card h4 {
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+      color: var(--secondary);
+    }
+    .info-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 10px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--text);
+    }
+    .contact-item .emoji {
+      width: 48px;
+      height: 48px;
+      background: #fde8ea;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .contact-item h4 { font-size: 0.9rem; margin-bottom: 2px; }
+    .contact-item p { font-size: 0.8rem; color: var(--text-muted); }
+
+    .empty-state {
+      text-align: center;
+      padding: 50px 20px;
+      color: var(--text-muted);
+    }
+    .empty-state .emoji { font-size: 3rem; margin-bottom: 12px; }
+    .empty-state h3 { color: var(--secondary); margin-bottom: 6px; font-size: 1.1rem; }
+
+    /* Legal footer note */
+    .legal-note {
+      font-size: 0.7rem;
+      color: #999;
+      text-align: center;
+      padding: 0 20px 16px;
+      line-height: 1.4;
+    }
+
+    @media (min-width: 520px) {
+      body { background: #dddde3; padding: 20px 0; }
+      .app {
+        border-radius: 24px;
+        overflow: hidden;
+        min-height: calc(100vh - 40px);
+      }
+      .bottom-nav { border-radius: 0 0 24px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- Status bar -->
+  <div class="status-bar">
+    <span class="time" id="clock">9:41</span>
+    <div class="icons"><span>📶</span><span>🔋</span></div>
+  </div>
+
+  <!-- Header -->
+  <header class="app-header">
+    <a href="#" class="logo" onclick="showPage('home'); return false;">🧯 Extin<span>Safe</span></a>
+    <button class="icon-btn" onclick="showPage('contacto')" aria-label="Contacto">📞</button>
+  </header>
+
+  <!-- ========== HOME ========== -->
+  <div id="home" class="page active">
+
+    <div class="search-wrap">
+      <div class="search-bar">
+        <span>🔍</span>
+        <input type="text" placeholder="Buscar servicio: recarga, mantención...">
+      </div>
+    </div>
+
+    <div class="promo">
+      <div class="tag">SERVICIO CERTIFICADO</div>
+      <h2>Recarga y mantenimiento de extintores</h2>
+      <p>Servicio profesional conforme a la normativa vigente. Atención rápida y con certificación.</p>
+      <div class="promo-btns">
+        <a href="https://wa.me/56912345678?text=Hola,%20necesito%20recarga%20o%20mantenimiento%20de%20extintores" class="promo-btn" target="_blank" rel="noopener">Solicitar servicio</a>
+        <a href="#" class="promo-btn outline" onclick="showPage('servicios'); return false;">Ver servicios</a>
+      </div>
+    </div>
+
+    <div class="section-label">
+      <h3>Nuestros servicios</h3>
+      <a href="#" onclick="showPage('servicios'); return false;">Ver todos</a>
+    </div>
+
+    <div class="cats-scroll">
+      <a href="#" class="cat-chip" onclick="showPage('servicios'); return false;">
+        <span class="emoji">🔄</span>
+        <span>Recarga</span>
+      </a>
+      <a href="#" class="cat-chip" onclick="showPage('servicios'); return false;">
+        <span class="emoji">🛠️</span>
+        <span>Mantenimiento</span>
+      </a>
+      <a href="#" class="cat-chip" onclick="showPage('servicios'); return false;">
+        <span class="emoji">📋</span>
+        <span>Inspección</span>
+      </a>
+      <a href="#" class="cat-chip" onclick="showPage('servicios'); return false;">
+        <span class="emoji">🏷️</span>
+        <span>Certificación</span>
+      </a>
+      <a href="#" class="cat-chip" onclick="showPage('servicios'); return false;">
+        <span class="emoji">🧯</span>
+        <span>Venta</span>
+      </a>
+    </div>
+
+    <div class="section-label">
+      <h3>Servicios principales</h3>
+    </div>
+
+    <div class="services">
+      <div class="service-card">
+        <div class="icon-box">🔄</div>
+        <div>
+          <h4>Recarga de extintores</h4>
+          <p>Recarga de agentes (PQS, CO₂, agua, espuma y otros) según tipo de extintor.</p>
+          <div class="meta">
+            <span>Normativa vigente</span>
+            <span>Con sello</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="icon-box">🛠️</div>
+        <div>
+          <h4>Mantenimiento preventivo</h4>
+          <p>Revisión de manómetro, manguera, válvula, precintos y estado general del equipo.</p>
+          <div class="meta">
+            <span>Preventivo</span>
+            <span>Correctivo</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="icon-box">📋</div>
+        <div>
+          <h4>Inspección y prueba</h4>
+          <p>Verificación de funcionamiento y cumplimiento de plazos de revisión exigidos.</p>
+          <div class="meta">
+            <span>Informe</span>
+            <span>Etiquetado</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">
+      <h3>Por qué elegirnos</h3>
+    </div>
+
+    <div class="benefits">
+      <div class="benefit-card">
+        <div class="emoji">✅</div>
+        <h4>Normativa vigente</h4>
+        <p>Trabajo según regulaciones locales</p>
+      </div>
+      <div class="benefit-card">
+        <div class="emoji">⚡</div>
+        <h4>Atención rápida</h4>
+        <p>Respuesta y servicio oportuno</p>
+      </div>
+      <div class="benefit-card">
+        <div class="emoji">📄</div>
+        <h4>Certificación</h4>
+        <p>Documentación del servicio</p>
+      </div>
+      <div class="benefit-card">
+        <div class="emoji">🏢</div>
+        <h4>Empresas y hogares</h4>
+        <p>Atendemos todo tipo de clientes</p>
+      </div>
+    </div>
+
+    <div class="trust-box">
+      <h4>🛡️ Compromiso de calidad</h4>
+      <ul>
+        <li>Servicio realizado por personal capacitado</li>
+        <li>Uso de agentes y repuestos adecuados</li>
+        <li>Entrega de registro / etiqueta de servicio</li>
+        <li>Información clara sobre plazos de revisión</li>
+      </ul>
+    </div>
+
+    <div class="cta-block">
+      <h3>¿Necesitas recargar o revisar tus extintores?</h3>
+      <p>Contáctanos y te orientamos según el tipo y estado de tus equipos.</p>
+      <div class="cta-buttons">
+        <a href="https://wa.me/56912345678?text=Hola,%20necesito%20información%20sobre%20recarga%20y%20mantenimiento%20de%20extintores" class="btn-main" target="_blank" rel="noopener">💬 Consultar por WhatsApp</a>
+        <a href="tel:+56912345678" class="btn-secondary">📞 Llamar ahora</a>
+      </div>
+    </div>
+
+    <p class="legal-note">
+      Este sitio informa sobre servicios de recarga y mantenimiento de extintores. 
+      Los plazos y requisitos pueden variar según la normativa local aplicable. 
+      Solicite siempre la documentación del servicio realizado.
+    </p>
+  </div>
+
+  <!-- ========== SERVICIOS ========== -->
+  <div id="servicios" class="page">
+    <div class="page-content">
+      <h3 style="margin-bottom:16px; font-size:1.15rem; color:var(--secondary);">Servicios disponibles</h3>
+
+      <div class="info-card">
+        <h4>🔄 Recarga de extintores</h4>
+        <p>Recargamos extintores de polvo químico seco (PQS), CO₂, agua, espuma y otros agentes según el tipo de equipo. Se verifica el estado del envase y se reemplazan componentes cuando corresponde.</p>
+      </div>
+
+      <div class="info-card">
+        <h4>🛠️ Mantenimiento</h4>
+        <p>Incluye revisión de presión, válvulas, mangueras, boquillas, precintos, manómetros y estado general. Se realizan las acciones correctivas necesarias dentro del alcance del servicio.</p>
+      </div>
+
+      <div class="info-card">
+        <h4>📋 Inspección periódica</h4>
+        <p>Verificación del cumplimiento de los plazos de revisión y estado operativo del extintor, con registro del servicio realizado.</p>
+      </div>
+
+      <div class="info-card">
+        <h4>🏷️ Etiquetado y documentación</h4>
+        <p>Entregamos constancia del servicio (etiqueta / registro) con fecha y datos del trabajo efectuado, para su control interno y fiscalizaciones.</p>
+      </div>
+
+      <div class="info-card">
+        <h4>🧯 Venta de extintores</h4>
+        <p>Ofrecemos equipos nuevos de distintos tipos y capacidades. Te orientamos según el riesgo y el lugar de uso (hogar, comercio, industria).</p>
+      </div>
+
+      <div class="cta-block" style="margin:20px 0 0;">
+        <h3>Solicita tu servicio</h3>
+        <p>Indícanos cantidad, tipo de extintor y ubicación para darte una orientación clara.</p>
+        <div class="cta-buttons">
+          <a href="https://wa.me/56912345678?text=Hola,%20quiero%20cotizar%20recarga%20/%20mantenimiento%20de%20extintores" class="btn-main" target="_blank" rel="noopener">Cotizar por WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== NORMATIVA ========== -->
+  <div id="normativa" class="page">
+    <div class="page-content">
+      <h3 style="margin-bottom:16px; font-size:1.15rem; color:var(--secondary);">Información importante</h3>
+
+      <div class="info-card">
+        <h4>📌 Cumplimiento normativo</h4>
+        <p>Los extintores deben mantenerse en condiciones operativas y revisarse según los plazos y criterios que establezca la normativa aplicable en su localidad o sector.</p>
+      </div>
+
+      <div class="info-card">
+        <h4>📅 Revisiones periódicas</h4>
+        <p>Es responsabilidad del propietario o administrador mantener los equipos revisados. Los intervalos pueden variar según tipo de extintor, uso y regulación local.</p>
+      </div>
+
+      <div class="info-card">
+        <h4>📄 Documentación</h4>
+        <p>Solicite siempre el registro o etiqueta del servicio. Conserve la documentación para auditorías, fiscalizaciones o controles internos de seguridad.</p>
+      </div>
+
+      <div class="info-card">
+        <h4>⚠️ Limitaciones</h4>
+        <p>No todos los extintores son recargables o reparables. En algunos casos se recomienda reemplazo. Le informaremos de forma clara tras la evaluación del equipo.</p>
+      </div>
+
+      <div class="trust-box" style="margin:16px 0 0;">
+        <h4>🛡️ Transparencia</h4>
+        <ul>
+          <li>No garantizamos resultados que dependan de factores ajenos al servicio</li>
+          <li>Informamos condiciones reales del equipo antes de proceder</li>
+          <li>Precios y plazos se confirman según evaluación</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== CONTACTO ========== -->
+  <div id="contacto" class="page">
+    <div class="page-content">
+      <h3 style="margin-bottom:16px; font-size:1.15rem; color:var(--secondary);">Contacto</h3>
+
+      <a href="https://wa.me/56912345678?text=Hola,%20necesito%20recarga%20o%20mantenimiento%20de%20extintores" class="contact-item" target="_blank" rel="noopener">
+        <div class="emoji">💬</div>
+        <div>
+          <h4>WhatsApp</h4>
+          <p>Respuesta rápida · Lun a Sáb</p>
+        </div>
+      </a>
+
+      <a href="tel:+56912345678" class="contact-item">
+        <div class="emoji">📞</div>
+        <div>
+          <h4>Llamar</h4>
+          <p>+56 9 1234 5678</p>
+        </div>
+      </a>
+
+      <div class="contact-item">
+        <div class="emoji">📧</div>
+        <div>
+          <h4>Correo</h4>
+          <p>contacto@extinsafe.cl</p>
+        </div>
+      </div>
+
+      <div class="contact-item">
+        <div class="emoji">📍</div>
+        <div>
+          <h4>Cobertura</h4>
+          <p>Atendemos empresas y particulares</p>
+        </div>
+      </div>
+
+      <div class="info-card" style="margin-top:8px;">
+        <h4>Horario de atención</h4>
+        <p>Lunes a Viernes: 09:00 – 18:00<br>
+        Sábados: 09:00 – 13:00<br>
+        Emergencias: consultar por WhatsApp</p>
+      </div>
+
+      <p class="legal-note" style="margin-top:20px;">
+        ExtinSafe — Servicio de recarga y mantenimiento de extintores.<br>
+        La información de esta página es orientativa. Confirme siempre condiciones, plazos y precios directamente con nosotros.
+      </p>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a href="#" class="nav-item active" onclick="showPage('home'); return false;" data-page="home">
+      <span class="nav-icon">🏠</span>Inicio
+    </a>
+    <a href="#" class="nav-item" onclick="showPage('servicios'); return false;" data-page="servicios">
+      <span class="nav-icon">🧯</span>Servicios
+    </a>
+    <a href="#" class="nav-item" onclick="showPage('normativa'); return false;" data-page="normativa">
+      <span class="nav-icon">📋</span>Info
+    </a>
+    <a href="#" class="nav-item" onclick="showPage('contacto'); return false;" data-page="contacto">
+      <span class="nav-icon">📞</span>Contacto
+    </a>
+  </nav>
+
+  <!-- FAB WhatsApp -->
+  <a href="https://wa.me/56912345678?text=Hola,%20necesito%20información%20sobre%20recarga%20y%20mantenimiento%20de%20extintores" 
+     class="fab-whatsapp" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
+
+</div>
+
+<script>
+  function updateClock() {
+    var now = new Date();
+    var h = now.getHours().toString().padStart(2, '0');
+    var m = now.getMinutes().toString().padStart(2, '0');
+    document.getElementById('clock').textContent = h + ':' + m;
+  }
+  updateClock();
+  setInterval(updateClock, 30000);
+
+  function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+    document.getElementById(pageId).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
+    var navBtn = document.querySelector('.nav-item[data-page="' + pageId + '"]');
+    if (navBtn) navBtn.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+</script>
+
+</body>
+</html>
